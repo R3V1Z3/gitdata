@@ -5,5 +5,5 @@
 YouTube Video: `$youtube`
 
 - System: `$system`
-- Tags: `$tags
+- Tags: `$tags`
 - Index: `$index`
