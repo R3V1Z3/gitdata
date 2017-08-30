@@ -9,9 +9,13 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/markdown-it/7.0.0/markdown-it.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
     <script src="//cdn.bootcss.com/tabletop.js/1.5.2/tabletop.min.js"></script>
+    
+    <script src="js/script.js"></script>
 
     <link rel="stylesheet" type="text/css" href="//gitcdn.xyz/repo/mixu/markdown-styles/master/layouts/jasonm23-foghorn/assets/style.css">
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <title>Data</title>
 
@@ -22,64 +26,9 @@
 
 <body id="custom">
     <div id="wrapper">
+        <div id="header"></div>
         <div id="content"></div>
     </div>
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
-        
-            // start by loading README.md
-            $.ajax({
-                url: "README.md",
-                dataType: "text",
-                success : function (data) {
-                    console.log('data here');
-                    render(data);
-                }
-            }).error(function(e) {
-                console.log('Error on ajax return.');
-            });
-            
-            // render README.md contents using Mardownit
-            function render(data) {
-                var md = window.markdownit({
-                    html: false, // Enable HTML tags in source
-                    xhtmlOut: true, // Use '/' to close single tags (<br />).
-                    breaks: true, // Convert '\n' in paragraphs into <br>
-                    langPrefix: 'language-', // CSS language prefix for fenced blocks.
-                    linkify: true,
-                    typographer: true,
-                    quotes: '“”‘’',
-                    highlight: function(str, lang) {
-                        if (lang && hljs.getLanguage(lang)) {
-                            try {
-                                return '<pre class="hljs"><code>' +
-                                    hljs.highlight(lang, str, true).value +
-                                    '</code></pre>';
-                            }
-                            catch (__) {}
-                        }
-                        return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
-                    }
-                });
-                $('#content').html( md.render(data) );
-            }
-            
-            var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/10A7Pf6iXnjuRRK4TuUzw_pO7lUn6RjWDg-ENvfcQ2Bc/edit?usp=sharing';
-
-            function init() {
-              Tabletop.init( { key: publicSpreadsheetUrl,
-                               callback: showInfo,
-                               simpleSheet: true } )
-            }
-
-            function showInfo(data, tabletop) {
-              console.log(data);
-            }
-
-            window.addEventListener('DOMContentLoaded', init)
-          
-        });
-    </script>
 </body>
 
 </html>

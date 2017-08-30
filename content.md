@@ -1,9 +1,9 @@
-## Column header
+## `$Original`
+by `$Maker`
 
-`$original` by `$maker`
+`$YouTube`
 
-YouTube Video: `$youtube`
+- System: `$System`
+- Tags: `$Tags`
 
-- System: `$system`
-- Tags: `$tags`
-- Index: `$index`
+Index: `$sys_previous` `$sys_current` of `$sys_last` `$sys_next`
