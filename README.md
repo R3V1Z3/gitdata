@@ -1,3 +1,2 @@
 # GoGitDown
-Google Spreadsheets + GitHub Pages + Markdown = ~~SpreadPageMark~~ GoGitDown.  
-`$sys_url = https://docs.google.com/spreadsheets/d/10A7Pf6iXnjuRRK4TuUzw_pO7lUn6RjWDg-ENvfcQ2Bc/edit?usp=sharing`
+Google Spreadsheets + GitHub Pages + Markdown = ~~SpreadPageMark~~ GoGitDown. This simple web app pulls content from a Google Spreadsheet and renders it in a sleek interface that's customized using Markdown and CSS. It's designed for use with GitHub Pages.

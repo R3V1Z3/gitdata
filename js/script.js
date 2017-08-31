@@ -27,30 +27,14 @@ jQuery(document).ready(function() {
     function main() {
         // start by loading README.md
         $.ajax({
-            url: "README.md",
-            dataType: "text",
-            success : function (readme) {
-                render_github_ribbon();
-                render( readme, 'header' );
-                // get spreadsheet url from readme
-                render_variables( $('#header code') );
-                get_content_template();
-            }
-        }).error(function(e) {
-            console.log('Error on ajax return.');
-        });
-    }
-    
-    function get_content_template() {
-        // get the content template
-        $.ajax({
-            url: "content.md",
+            url: "template.md",
             dataType: "text",
             success : function (template) {
-                $('body').append('<div id="template"></div>');
-                render( template, 'template' );
-                // hide template, we'll only use it for templating purposes
-                $('#template').hide();
+                render_github_ribbon();
+                render_markdown(template);
+                separate_header();
+                render_variables( $('#header code') );
+                render_template();
                 get_spreadsheet( spreadsheet );
             }
         }).error(function(e) {
@@ -59,13 +43,37 @@ jQuery(document).ready(function() {
     }
     
     function render_github_ribbon() {
-        var content = '<a class="github-fork-ribbon" href="//github.com' + path + '" title="Fork me on GitHub">Fork me on GitHub</a>';
+        var content = '<a class="github-fork-ribbon" href="//github.com' + path;
+        content += '" title="Fork me on GitHub">Fork me on GitHub</a>';
         $('body').append(content);
     }
     
-    function render( data, div_id ) {
+    function render_markdown( data ) {
         var md = window.markdownit();
-        $( '#' + div_id ).html( md.render(data) );
+        $( '#content' ).html( md.render(data) );
+    }
+    
+    function render_template() {
+        // add template div, move content div to it and hide it
+        $('body').append('<div id="template"></div>');
+        $('#content').children().clone().appendTo('#template');
+        $('#template').hide();
+    }
+    
+    function separate_header() {
+        var header = 'h1';
+        var heading = 'h2';
+        if ( $('#wrapper ' + header).length ) {
+            $('#wrapper ' + header).each(function() {
+                var name = css_name( $(this).text() );
+                $(this).wrapInner('<a class="handle" name="' + name + '" href="#' + name + '"/>');
+                $(this).nextUntil(heading).andSelf().wrapAll('<div class="section header" id="' + name + '"/>');
+            });
+        } else {
+            //no header, so we'll add an empty one
+            $('#wrapper').append('<div class="header"></div>');
+        }
+        $('#header').clone().prepend('#wrapper').remove();
     }
     
     function get_spreadsheet( publicSpreadsheetUrl ) {
@@ -148,7 +156,7 @@ jQuery(document).ready(function() {
                         }
                     }
                     // remove wrapped code tag and add name as css class
-                    $(this).parent().addClass( n );
+                    $(this).parent().addClass( 'sys_field ' + n );
                     $(this).contents().unwrap();
                 }
             }
@@ -166,6 +174,20 @@ jQuery(document).ready(function() {
         content += id;
         content += '" frameborder="0" allowfullscreen></iframe>';
         return content;
+    }
+    
+    // helper function to ensure section ids are css compatible
+    function css_name(str) {
+        str = str.toLowerCase();
+        // remove non-alphanumerics
+        str = str.replace(/[^a-z0-9_\s-]/g, '-');
+        // clean up multiple dashes or whitespaces
+        str = str.replace(/[\s-]+/g, ' ');
+        // remove leading and trailing spaces
+        str = str.trim();
+        // convert whitespaces and underscore to dash
+        str = str.replace(/[\s_]/g, '-');
+        return str;
     }
     
     function register_events() {
