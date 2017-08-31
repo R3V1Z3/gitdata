@@ -3,7 +3,14 @@
 // get spreadsheet from readme.md
 var spreadsheet = 'https://docs.google.com/spreadsheets/d/10A7Pf6iXnjuRRK4TuUzw_pO7lUn6RjWDg-ENvfcQ2Bc/edit?usp=sharing';
 
-var prefix = 'sys_';
+var sys_prefix = 'sys_';
+var sys_var = {
+    'previous': sys_prefix + 'previous',
+    'current': sys_prefix + 'current',
+    'next': sys_prefix + 'next',
+    'last': sys_prefix + 'last',
+    'url': sys_prefix + 'url'
+};
 var db = {};
 // current item in db that is being displayed
 var current = 0;
@@ -102,15 +109,15 @@ jQuery(document).ready(function() {
             var n = variable_name(t);
             if (n != '' ) {
                 // check for internal variables
-                if ( n === prefix + 'current' ) {
+                if ( n === sys_var['current'] ) {
                     render_sys_nav( $(this), t, n, current);
-                } else if ( n === prefix + 'last' ) {
+                } else if ( n === sys_var['last'] ) {
                     render_sys_nav( $(this), t, n, db.length - 1);
-                } else if ( n === prefix + 'previous' ) {
+                } else if ( n === sys_var['previous'] ) {
                     render_sys_nav( $(this), t, n, '<');
-                } else if ( n === prefix + 'next' ) {
+                } else if ( n === sys_var['next'] ) {
                     render_sys_nav( $(this), t, n, '>');
-                } else if ( n === prefix + 'url' ) {
+                } else if ( n === sys_var['url'] ) {
                     // set spreadhsheet if assignment operator found
                     var s = $(this).text().split('=');
                     if ( s.length > 1) {
@@ -154,21 +161,21 @@ jQuery(document).ready(function() {
         $('.nav').click(function(e){
             var t = $(this).attr('id');
             switch(t) {
-                case prefix + 'previous':
+                case sys_var['previous']:
                     current--;
                     if(current < 0) current = db.length - 1;
                     render_content(db);
                     break;
-                case prefix + 'current':
+                case sys_var['current']:
                     //code block
                     break;
-                case prefix + 'next':
+                case sys_var['next']:
                     current++;
                     if(current > db.length - 1) current = 0;
                     render_content(db);
                     break;
-                case prefix + 'last':
-                    current = db.length;
+                case sys_var['last']:
+                    current = db.length - 1;
                     render_content(db);
                     break;
                 default:

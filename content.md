@@ -1,5 +1,4 @@
-## `$Original`
-by `$Maker`
+## `$Original` *by `$Maker`*
 
 `$YouTube`
 

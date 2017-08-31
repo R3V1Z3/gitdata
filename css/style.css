@@ -9,3 +9,8 @@
 .nav:hover {
     background: rgba(255,255,0,0.25);
 }
+
+#content .Original em {
+    font-size: 0.6em;
+    color: #999;
+}
