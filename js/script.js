@@ -1,5 +1,10 @@
 /* global $, jQuery, Tabletop */
 
+// get URL parameters
+let params = (new URL(location)).searchParams;
+var path = '/' + window.location.hostname.split('.')[0];
+path += window.location.pathname;
+
 // get spreadsheet from readme.md
 var spreadsheet = 'https://docs.google.com/spreadsheets/d/10A7Pf6iXnjuRRK4TuUzw_pO7lUn6RjWDg-ENvfcQ2Bc/edit?usp=sharing';
 
@@ -25,6 +30,7 @@ jQuery(document).ready(function() {
             url: "README.md",
             dataType: "text",
             success : function (readme) {
+                render_github_ribbon();
                 render( readme, 'header' );
                 // get spreadsheet url from readme
                 render_variables( $('#header code') );
@@ -50,6 +56,11 @@ jQuery(document).ready(function() {
         }).error(function(e) {
             console.log('Error on ajax return.');
         });
+    }
+    
+    function render_github_ribbon() {
+        var content = '<a class="github-fork-ribbon" href="//github.com' + path + '" title="Fork me on GitHub">Fork me on GitHub</a>';
+        $('body').append(content);
     }
     
     function render( data, div_id ) {
